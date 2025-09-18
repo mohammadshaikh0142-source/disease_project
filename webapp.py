@@ -41,24 +41,42 @@ if select=='Heart_disease':
     with col1:
         age = st.number_input('Enter the Age',12,100)
         sex = st.selectbox('Gender',['Male','Female'])
-        cp = st.number_input('Chest Pain types',0,3)
-        trestbps = st.number_input('Resting Blood Pressure',90,200)
-        chol = st.number_input('Serum Cholestoral in mg/dl',100,600)
-        fbs = st.selectbox('Fasting Blood Sugar > 120 mg/dl',['Yes','No'])
+        cp = st.selectbox('Chest Pain types',['Typical angina',
+                'Atypical angina','Non-anginal pain','Asymptomatic'])
+        trestbps = st.number_input('what is your resting Blood Pressure',90,200)
+        chol = st.number_input('Serum Cholestoral level in mg/dl',100,600)
+        fbs = st.selectbox('Is your body glucose level is less than 120 mg/dl',['Yes','No'])
 
     with col2:
-        restecg = st.selectbox('Resting Electrocardiographic results',['Yes','No'])
+        restecg = st.selectbox('Resting Electrocardiographic results',['Normal','Abnormal'])
         thalach = st.number_input('Maximum Heart Rate achieved',60,210)
-        exang = st.selectbox('Exercise Induced Angina',['Yes','No'])
-        oldpeak = st.number_input('ST depression induced by exercise',0.0,7.0)
-        slope = st.number_input('Slope of the peak exercise ST segment',0,3)
-        ca = st.number_input('Major vessels colored by flourosopy',0,5)
-    
+        exang = st.selectbox('hest pain (angina) that happens when you exercise',['No angina during exercise',
+                'Angina present during exercise'])
+        oldpeak = st.number_input('ST depression induced by exercise (reduced blood flow to the heart)',0.0,7.0)
+        slope = st.selectbox('Slope of the peak exercise ST segment (ST segment on an ECG at the highest point of exercise)',['Upsloping','Flat','Downsloping'])
+        ca = st.number_input('Major vessels colored by (flourosopy 0 → No vessel colored. 1, 2, 3 → Number of vessels colored. 4 → Sometimes used to mean not applicable',0,5)
     thal = st.number_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect',0,4)
+
+
     sex = 1 if sex=='Male' else 0
-    fbs = 1 if fbs=='Yes' else 0
-    restecg = 1 if restecg=='Yes' else 0
-    exang = 1 if exang=='Yes' else 0
+    fbs = 0 if fbs=='Yes' else 1
+    restecg = 0 if restecg=='Normal' else 1
+    exang = 0 if exang=='No angina during exercise' else 1
+    if cp=='Typical angina':
+        cp = 0
+    elif cp=='Atypical angina':
+        cp = 1
+    elif cp=='Non-anginal pain':
+        cp = 2
+    else:
+        cp = 3
+    if slope=='Upsloping':
+        slope=0
+    elif slope=='Flat':
+        slope=1
+    else:
+        slope=2
+    
 
     # code for Prediction
     heart_diagnosis = ''
@@ -76,7 +94,7 @@ if select=='Heart_disease':
                 heart_diagnosis = 'The patient does not have any heart disease'
 
         except:
-            heart_diagnosis = 'Fill all the values first'
+            st.warning('fill all the value first')
     st.success(heart_diagnosis)
     
 if select=='Diabetes (Sugar)':
@@ -86,17 +104,17 @@ if select=='Diabetes (Sugar)':
     with col1:
         gender = st.selectbox('Gender',['Male','Female'])
         if  gender=='Female':
-            Pregnancies = st.number_input('Number of Pregnancies',0,12)
+            Pregnancies = st.number_input('Enter Number of Pregnancies',0,12)
         else:
             Pregnancies=0
-        Glucose = st.number_input('Glucose Level',0,199)
-        BloodPressure = st.number_input('Blood Pressure value',0,150)
-        SkinThickness = st.number_input('Skin Thickness value',0,100)
+        Glucose = st.number_input('what is your glucose Level?',0,199)
+        BloodPressure = st.number_input('what is your blood Pressure value?',0,150)
+        SkinThickness = st.number_input('what is your skin Thickness value (millimeter)?',0,100)
     with col2:
-        Insulin = st.number_input('Insulin Level',0,900)
+        Insulin = st.number_input('what is your insulin Level?',0,900)
         BMI = st.number_input('BMI value',0.0,70.0)
-        DiabetesPedigreeFunction = st.number_input('Diabetes Pedigree Function value',0.001,3.00)
-        Age = st.number_input('Age of the Person',12,100)
+        DiabetesPedigreeFunction = st.number_input('Diabetes Pedigree Function value (it is the score that show likelihood of diabetes based on your family history)',0.001,3.00)
+        Age = st.number_input('Enter your age',12,100)
 
     diab_diagnosis = ''
     if st.button('Diabetes Test Result'):
@@ -114,7 +132,7 @@ if select=='Diabetes (Sugar)':
                 diab_diagnosis = 'The patient is non diabetic'
         
         except:
-            diab_diagnosis = 'Fill all the values first'
+            st.warning('fill all the value first')
     st.success(diab_diagnosis)
 
 
@@ -124,19 +142,19 @@ if select=='Hypertension (BP)':
     col1, col2 = st.columns(2)
     with col1:
         sex = st.selectbox('Gender',['Male','Female'])
-        age = st.number_input('Enter the Age',12,100)
+        age = st.number_input('Enter ypur Age',12,100)
         currentSmoker = st.selectbox('Do you smoke?',['Yes','No'])
-        cigsPerDay = st.number_input('Number of cigrates per day',0,70)
-        BPMeds = st.selectbox('Are you taking BP medicines',['Yes','No'])
-        diabetes = st.selectbox('Do you have diabetes',['Yes','No'])
+        cigsPerDay = st.number_input('Number of cigrates you smoke per day',0,70)
+        BPMeds = st.selectbox('Are you taking BP medicines?',['Yes','No'])
+        diabetes = st.selectbox('Do you have diabetes?',['Yes','No'])
 
     with col2:
-        totChol = st.number_input('total cholestrol level',100,700)
-        sysBP = st.number_input('systolic blood pressure',80,300)
-        diaBP = st.number_input('Distollic blood pressure',40,160)
-        BMI_bp = st.number_input('Body mass index value (BMI)',10,60)
-        heartRate = st.number_input('heart rate',40,160)
-        glucose = st.number_input('glucose level',30,400)
+        totChol = st.number_input('what is your total cholestrol level?',100,700)
+        sysBP = st.number_input('systolic blood pressure value (Example: In 120/80 mmHg)',80,300)
+        diaBP = st.number_input('Distollic blood pressure (Example: In 120/80 mmHg)',40,160)
+        BMI_bp = st.number_input('Body mass index value (BMI) [Formula: BMI = weight (kg) / [height (m)]²]',10,60)
+        heartRate = st.number_input('what is your current heart rate?',40,160)
+        glucose = st.number_input('what is your glucose level?',30,400)
 
     sex = 1 if sex=='Male' else 0
     currentSmoker = 1 if currentSmoker=='Yes' else 0
@@ -160,7 +178,7 @@ if select=='Hypertension (BP)':
                 Hypertension_diagnosis = "The person does not have Hypertension(BP) problem"
 
         except:
-            Hypertension_diagnosis = 'Fill all the values first'
+            st.warning('fill all the value first')
 
     st.success(Hypertension_diagnosis)
 if select=='Lung Cancer':
@@ -169,18 +187,18 @@ if select=='Lung Cancer':
     col1, col2 = st.columns(2)
     with col1:
         GENDER = st.selectbox('Gender',['Male','Female'])
-        age_lc = st.number_input('Enter the Age',12,100)
-        SMOKING = st.selectbox('Are you smoke',['Yes','No'])
-        YELLOW_FINGERS = st.selectbox('Do you have yellow fingures',['Yes','No'])
+        age_lc = st.number_input('Enter your Age',12,100)
+        SMOKING = st.selectbox('Do you smoke',['Yes','No'])
+        YELLOW_FINGERS = st.selectbox('Do you have yellow fingures? (yellowish discoloration of the fingertips)',['Yes','No'])
         ANXIETY = st.selectbox('Are you facing anxiety problem',['Yes','No'])
         PEER_PRESSURE = st.selectbox('Do you have any type of peer pressure',['Yes','No'])
         CHRONIC_DISEASE = st.selectbox('Do you have any type of chronic disease',['Yes','No'])
-        FATIGUE = st.selectbox('DO you feel tired/overworked',['Yes','No'])
+        FATIGUE = st.selectbox('Do you feel tired/overworked',['Yes','No'])
        
     with col2:
         ALLERGY = st.selectbox('Do you have any type of allergy',['Yes','No'])
-        WHEEZING = st.selectbox('Do you wheeze',['Yes','No'])
-        ALCOHOL_CONSUMING = st.selectbox('Do you consume alcohol',['Yes','No'])
+        WHEEZING = st.selectbox('Do you wheeze? (Wheezing is a high-pitched whistling sound made while breathing)',['Yes','No'])
+        ALCOHOL_CONSUMING = st.selectbox('Do you consume alcohol?',['Yes','No'])
         COUGHING = st.selectbox('Are you facing problem of coughing',['Yes','No'])
         SHORTNESS_OF_BREATH = st.selectbox('Do you face problem of breath_shortness',['Yes','No'])
         SWALLOWING_DIFFICULTY = st.selectbox('Do you face difficulty in swallowing',['Yes','No'])
@@ -219,7 +237,7 @@ if select=='Lung Cancer':
                 Lung_cancer_diagnosis = "The person does not have lung cancer"
 
         except:
-            Lung_cancer_diagnosis = 'Fill all the values first'
+            st.warning('fill all the value first')
 
     st.success(Lung_cancer_diagnosis)
 
@@ -243,3 +261,4 @@ if st.button('Enter'):
             st.write('Ai assistant:', response.text, '\n')
     except Exception as e:
         st.caption(f'An error occured(api key expired) {e}')
+
